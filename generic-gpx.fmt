@@ -1,0 +1,24 @@
+#------------------------------------------------------------------------------
+# sophies format for extracting GPS data from embedded video using ExifTool
+#
+# based on GPX format, main change being generic trackpoints over unique
+# 	telemetry-identifying tags of GPX
+#
+# also checks for zeroes
+#------------------------------------------------------------------------------
+#[HEAD]<?xml version="1.0" encoding="utf-8"?>
+#[HEAD]<gpx>
+#[HEAD]<trk>
+#[HEAD]<trkseg>
+#[IF]  ${gpslatitude;$_ = undef if $_ == 0} ${gpslongitude;$_ = undef if $_ == 0} $sampletime
+#[BODY]<trkpt>
+#[BODY]  <lat>$gpslatitude#</lat>
+#[BODY]  <lon>$gpslongitude#</lon>
+#[BODY]  <ele>$gpsaltitude#</ele>
+#[BODY]  <sampletime>${sampletime#;$_=sprintf('%.5f',$_)}</sampletime>
+#[BODY]  <date>${gpsdatetime#;DateFmt("%d%m%Y")}</date>
+#[BODY]  <time>${gpsdatetime#;DateFmt("%H%M%S")}</time>
+#[BODY]</trkpt>
+#[TAIL]</trkseg>
+#[TAIL]</trk>
+#[TAIL]</gpx>
